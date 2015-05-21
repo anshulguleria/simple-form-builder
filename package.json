@@ -1,0 +1,19 @@
+{
+  "name": "simple-form-builder",
+  "version": "0.0.1",
+  "description": "Simple form builder for all your needs.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anshulguleria/simple-form-builder.git"
+  },
+  "author": "anshulguleria <anshulguleria@ymail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/anshulguleria/simple-form-builder/issues"
+  },
+  "homepage": "https://github.com/anshulguleria/simple-form-builder#readme"
+}
