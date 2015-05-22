@@ -71,3 +71,5 @@ Session.vim
 sftp-config.json
 
 ### Project files ###
+# ignore tmp/ files created by babel es transpiler
+tmp/
