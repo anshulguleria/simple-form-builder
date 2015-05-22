@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/anshulguleria/simple-form-builder/issues"
   },
-  "homepage": "https://github.com/anshulguleria/simple-form-builder#readme"
+  "homepage": "https://github.com/anshulguleria/simple-form-builder#readme",
+  "devDependencies": {
+    "broccoli": "^0.16.3"
+  }
 }
