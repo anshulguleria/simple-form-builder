@@ -4,7 +4,9 @@ var esTranspiler = require('broccoli-babel-transpiler'),
 
 
 var appJs = esTranspiler(app, {
-    sourceRoot: 'client'
+    sourceRoot: 'client',
+    ignore: '**/*.*[~,swp]'
+
 });
 
 module.exports = appJs;
