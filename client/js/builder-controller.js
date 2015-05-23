@@ -1,7 +1,7 @@
 (function () {
     var Builder = {};
 
-    Builder.getElementConfig(elementName) {
+    Builder.getElementConfigFor = function (elementName) {
         return elementsConfiguration[elementName];
-    }
+    };
 })();
