@@ -1,0 +1,22 @@
+{
+  "name": "simple-form-builder",
+  "version": "0.0.1",
+  "homepage": "https://github.com/anshulguleria/simple-form-builder",
+  "description": "Simple app to generate dynamic forms using bootstrap as theme.",
+  "main": "index.js",
+  "authors": [
+    "anshulguleria <anshulguleria@ymail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "client/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.4"
+  }
+}
