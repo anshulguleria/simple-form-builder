@@ -5,8 +5,10 @@ var esTranspiler = require('broccoli-babel-transpiler'),
 
 var appJs = esTranspiler(app, {
     sourceRoot: 'client',
-    ignore: '**/*.*[~,swp]'
-
+    ignore: [
+        '**/*.*[~,swp],node_modules/**/*.*',
+        'bower_components/**/*.*'
+    ]
 });
 
 module.exports = appJs;
