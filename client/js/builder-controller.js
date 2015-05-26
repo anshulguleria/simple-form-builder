@@ -1,7 +1,7 @@
 (function () {
-    var Builder = {};
+    var BuilderController = {};
 
-    Builder.getElementConfigFor = function (elementName) {
+    BuilderController.getElementConfigFor = function (elementName) {
         return elementsConfiguration[elementName];
     };
 })();
