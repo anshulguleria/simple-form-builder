@@ -12,7 +12,8 @@
 
     };
 
-    BuilderView.appendElement = function (context) {
+    BuilderView.appendElement = function (elementType) {
+        var context = controller.getElementConfigFor(elementType);
         var template = Handlebars.compile($('#templ-' + context.name).html());
         var $formElements = $('#form_elements');
         $formElements.html($formElements.html() + template.html(context));
@@ -26,9 +27,9 @@
     BuilderView.addElement = function (elementType) {
         if(!elementType) {
             // ask for element type
-            // then call _addElement
+            // then call appendElement
         } else {
-            // call _addElement
+            // call appendElement
         }
     };
 })();
