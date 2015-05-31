@@ -5,28 +5,30 @@ var elementsConfiguration = {
          * It contains the attributes which belongs
          * to the respective DOM element.
          */
-        var attributes = {
-            get type() {
-                return [
+        var attributes = [
+            {
+                // read-only property
+                get name() { return "Type" },
+                // read-only property
+                get value() { return "type" },
+                options: [
                     {
                         // label is the label to show in UI
                         // for getting input settings
                         label: "Text",
                         value: "text"
                     },{
-                        label: "Textarea",
-                        value: "textarea"
+                        label: "Number",
+                        value: "number"
                     }
-                ];
-            },
-            /**
-             * This is to handle the any other custom
-             * attributes if the need comes.
-             */
-            get customAttributes () {
-                return [];
+                ]
+            }, {
+                get name() { return "Placeholder" },
+                get value() { return "placeholder" },
+                options: null,
             }
-        };
+
+        ];
 
         var events = {
         };
