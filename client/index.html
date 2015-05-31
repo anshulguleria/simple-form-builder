@@ -11,25 +11,72 @@
     <h1>Form builder</h1>
 
     <div class="container-fluid">
-        <div id="form_elements">
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="dropdown">
+                    <button class="btn btn-default dropdown-toggle" type="button" id="add_elemet" data-toggle="dropdown" aria-expanded="true">
+                        + add
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="add_elemet">
+                        <li role="presentation"><a class="jadd-ele" role="menuitem" tabindex="-1" href="#" data-element="input">Input</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <form id="form_elements" class="form-horizontal">
 
             <!--<div class="form-group">
                 <label>Name</label>
                 <input class="form-control" type="">
             </div>-->
-        </div>
-        <div class="row">
-            <div class="col-sm-4">
-                <button id="add_elemet" class="btn btn-default" type="button">
-                    + add
-                </button>
-            </div>
-        </div>
+        </form>
     </div>
 
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="http://localhost:4200/js/builder-controller.js"></script>
+    <script src="bower_components/handlebars/handlebars.min.js"></script>
     <script src="http://localhost:4200/js/elements-config.js"></script>
+    <script src="http://localhost:4200/js/builder-controller.js"></script>
+    <script src="http://localhost:4200/js/builder-view.js"></script>
+    <script src="http://localhost:4200/js/app.js"></script>
+
+    <!-- this section contains elements rendering templates -->
+    <!-- edit template for input -->
+    <script type='text/x-handlebars' id='input-edit'>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Label text</label>
+            <div class="col-sm-2">
+                <input class="form-control" type="text">
+            </div>
+        </div>
+        {{#each attributes}}
+        <div class="form-group">
+            <label class="col-sm-2 control-label">{{name}}</label>
+            {{#if options}}
+            <div class="col-sm-1">
+                <select class="form-control" name="inp_type">
+                    {{#each options}}
+                    <option val="{{value}}">{{label}}</option>
+                    {{/each}}
+                </select>
+            </div>
+            {{else}}
+            <div class="col-sm-2">
+                <input class="form-control" type="text">
+            </div>
+            {{/if}}
+        </div>
+        {{/each}}
+    </script>
+    <!-- render template for input -->
+    <script type='text/x-handlebars' id='input-render'>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">{{label}}</label>
+            <input class="form-control" type="{{attributes.type}}">
+        </div>
+    </script>
+
 </body>
 </html>
