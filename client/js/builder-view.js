@@ -24,9 +24,17 @@
     BuilderView.setEditEvents = function (elementType) {
     };
 
+    function _render = function (context, templateHtml, $parentEle, clearPrevious = false) {
+        var compiledTemplate = Handlebars.compile(templateHtml);
+    }
 
+    /**
+     * Render view for form builder
+     */
     BuilderView.render = function () {
-
+        var context = controller.formElements;
+        var template = $('#builder-view').html();
+        _render(context, template, $('#form_container'), true);
     };
 
     BuilderView.appendElement = function (elementType) {
