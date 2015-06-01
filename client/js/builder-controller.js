@@ -5,5 +5,9 @@
         return elementsConfiguration[elementName];
     };
 
+    BuilderController.formElements = {
+        elements: []
+    };
+
     window.BuilderController = BuilderController;
 })();

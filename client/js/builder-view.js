@@ -5,6 +5,7 @@
     var controller = BuilderController;
 
     BuilderView.init = function () {
+        this.render();
         this.setupEvents();
     };
 
@@ -24,8 +25,24 @@
     BuilderView.setEditEvents = function (elementType) {
     };
 
-    function _render = function (context, templateHtml, $parentEle, clearPrevious = false) {
+    function _processTemplate(context, templateHtml) {
         var compiledTemplate = Handlebars.compile(templateHtml);
+        var renderedTemplate = compiledTemplate(context);
+        return renderedTemplate;
+    }
+
+    function _appendHtml (markup, $parentEle, clearPrevious) {
+        if(clearPrevious === true) {
+            // clear previous markup
+            $parentEle.html("");
+        }
+        // append current markup
+        $parentEle.html($parentEle.html() + processedHtml);
+    }
+
+    function _render (context, templateHtml, $parentEle, clearPrevious = false) {
+        var processedHtml = _processTemplate(context, templateHtml);
+        _appendHtml(processedHtml, $parentEle, clearPrevious);
     }
 
     /**
@@ -34,14 +51,18 @@
     BuilderView.render = function () {
         var context = controller.formElements;
         var template = $('#builder-view').html();
+        var initialHtml = _processTemplate(context, template);
+        // add markup as per element
+        // like input-render template for input element, etc
+
         _render(context, template, $('#form_container'), true);
     };
 
     BuilderView.appendElement = function (elementType) {
-        var context = controller.getElementConfigFor(elementType);
-        var template = Handlebars.compile($('#' + elementType + '-edit').html());
-        var $formElements = $('#form_elements');
-        $formElements.html($formElements.html() + template(context));
+        var context = controller.getElementConfigFor(elementType),
+            templateHtml = $('#' + elementType + '-edit').html(),
+            $formElements = $('#form_elements');
+        _render(context, templateHtml, $formElements);
     };
 
     function _addElement(elementType) {
