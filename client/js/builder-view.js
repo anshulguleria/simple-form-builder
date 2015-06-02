@@ -17,7 +17,7 @@
         $('.jadd-ele').on('click.addele', function (ev) {
             var elementType = $(ev.target).attr('data-element');
             if(!elementType) { return };
-            this.addElement(elementType);
+            this.addElement(elementType, "edit");
             ev.preventDefault();
         }.bind(this));
     };
@@ -54,28 +54,39 @@
         var initialHtml = _processTemplate(context, template);
         // add markup as per element
         // like input-render template for input element, etc
+        context.forEach(function (ele) {
+            var eleMarkup = BuilderView.getEleHtml(ele.type, ele.isEditMode ? "edit" : "render", ele);
+            _appendHtml(eleMarkup, initialHtml.find('#form_container'));
+        });
 
         _render(context, template, $('#form_container'), true);
     };
 
-    BuilderView.appendElement = function (elementType) {
-        var context = controller.getElementConfigFor(elementType),
-            templateHtml = $('#' + elementType + '-edit').html(),
-            $formElements = $('#form_elements');
-        _render(context, templateHtml, $formElements);
+    /**
+     * provides rendered markup and also applies requried events.
+     */
+    BuilderView.getEleHtml = function (elementType, state, context) {
+        var eleTemplate = $('#' + elementType + '-' + state).html();
+        var eleMarkup = _processTemplate(context, eleTemplate);
+        this.setEleEvents(elementType, state, $(eleMarkup));
+    };
+    BuilderView.setEleEvents = function (elementType, state, $ele) {
+    };
+    BuilderView.removeEleEvents = function (elementType, state, $ele) {
     };
 
-    function _addElement(elementType) {
-        var config = controller.getElementConfigFor(elementType);
-        BuilderView.appendElement(config);
+    BuilderView.appendElement = function (eleInfo) {
+        var eleMarkup = this.getEleHtml(eleInfo.type, eleInfo.isEditMode ? "edit" : "render", ele);
+        _appendHtml(eleMarkup, $('#form_container'));
     };
 
-    BuilderView.addElement = function (elementType) {
+    BuilderView.addElement = function (elementType, state) {
+        var context = controller.addElement(elementType, state);
         if(!elementType) {
             // ask for element type
             // then call appendElement
         } else {
-            this.appendElement(elementType);
+            this.appendElement(elementType, state);
             // call appendElement
         }
     };

@@ -11,6 +11,9 @@ var elementsConfiguration = {
                 get name() { return "Type" },
                 // read-only property
                 get value() { return "type" },
+                // decide weather this will be present
+                // by default or not
+                isDefault: true,
                 options: [
                     {
                         // label is the label to show in UI
@@ -25,6 +28,7 @@ var elementsConfiguration = {
             }, {
                 get name() { return "Placeholder" },
                 get value() { return "placeholder" },
+                isDefault: false,
                 options: null,
             }
 
