@@ -3,5 +3,7 @@
  */
 
 (function () {
-    BuilderView.init();
+    $('document').ready(function () {
+        BuilderView.init();
+    });
 })();

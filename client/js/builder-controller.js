@@ -12,7 +12,10 @@
     BuilderController.addElement = function (eleType, state) {
         var eleInfo = {
             type: eleType,
-            isEditMode: state === 'edit'
+            isEditMode: state === 'edit',
+            // this property will be used when we provide dragdrop
+            // of form elements
+            position: this.formElements.elements.length
         };
         var eleConfig = this.getElementConfigFor(eleType);
         eleInfo.attributes = eleConfig.attributes;
