@@ -4,7 +4,39 @@
 
     let controller = BuilderController;
 
+    BuilderView.registerPartials = function ($elems) {
+        $elems = $elems || $('script[id$=-partial]');
+        [].forEach.call($elems, elem => {
+            this.registerPartial($(elem))
+        });
+    };
+
+    BuilderView.registerPartial = function ($partialEle) {
+        let name = $partialEle.prop('id').split('-partial')[0];
+        Handlebars.registerPartial(name, $partialEle.html());
+    };
+
+    BuilderView.registerHelpers = function () {
+        // equality helper
+        Handlebars.registerHelper('equal', function (firstVal, secondVal, options) {
+            var result = false;
+            if(options.hash.strict === true) {
+                result = firstVal === secondVal;
+            } else {
+                result = firstVal == secondVal;
+            }
+            if(result) {
+                return options.hash.pass;
+            } else {
+                return options.hash.fail;
+            }
+        });
+    };
+
     BuilderView.init = function () {
+        this.registerPartials();
+        this.registerHelpers();
+
         this.render();
         this.setupEvents();
     };
@@ -78,7 +110,7 @@
 
     BuilderView.appendElement = function (eleInfo) {
         let eleMarkup = this.getEleHtml(eleInfo.type, eleInfo.isEditMode ? "edit" : "render", eleInfo);
-        _appendHtml(eleMarkup, $('#form_container'));
+        _appendHtml(eleMarkup, $('#form_elements'));
     };
 
     BuilderView.addElement = function (elementType, state) {
@@ -87,7 +119,7 @@
             // ask for element type
             // then call appendElement
         } else {
-            this.appendElement({ type: elementType, isEditMode: state === "edit" });
+            this.appendElement(context);
             // call appendElement
         }
     };

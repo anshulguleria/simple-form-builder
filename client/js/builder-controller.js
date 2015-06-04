@@ -19,9 +19,6 @@
         };
         var eleConfig = this.getElementConfigFor(eleType);
         eleInfo.attributes = eleConfig.attributes;
-        eleInfo.selectedAttributes = eleInfo.attributes.filter(function (attr) {
-            return attr.isDefault;
-        });
         eleInfo.label = eleConfig.label;
 
         this.formElements.elements.push(eleInfo);

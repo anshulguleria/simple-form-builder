@@ -27,13 +27,6 @@
 
         <div id="form_container">
         </div>
-        <form id="form_elements" class="form-horizontal">
-
-            <!--<div class="form-group">
-                <label>Name</label>
-                <input class="form-control" type="">
-            </div>-->
-        </form>
     </div>
 
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
@@ -50,17 +43,50 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">Label text</label>
             <div class="col-sm-2">
-                <input class="form-control" type="text">
+                <input class="form-control" type="text" value="{{label}}">
             </div>
         </div>
-        {{#each attributes}}
+
         <div class="form-group">
-            <label class="col-sm-2 control-label">{{name}}</label>
+            <label class="control-label col-sm-2">Attributes</label>
+        </div>
+        <div class="attributes-container">
+            {{#each attributes}}
+                {{#if isSelected}}
+                {{> input_attribute_edit}}
+                {{/if}}
+            {{/each}}
+            <div class="row">
+                <div class="col-sm-1 col-sm-offset-3">
+                    <button class="btn btn-small">+ add attribute</button>
+                    <button class="btn btn-default dropdown-toggle" type="button" id="_{{position}}add_attr" data-toggle="dropdown" aria-expanded="true">
+                        + add
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="_{{position}}add_attr">
+                        {{#each attributes}}
+                            {{#unless isSelected}}
+                            <li role="presentation"><a class="jadd-attr" role="menuitem"
+                                tabindex="-1" href="#" data-attr="{{value}}">{{label}}</a></li>
+                            {{/unless}}
+                        {{/each}}
+                        <li role="presentation"><a class="jadd-attr" role="menuitem" tabindex="-1" href="#" data-attr="input">Input</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        </div>
+    </script>
+    <script id="input_attribute_edit-partial" type="text/x-handlebars">
+        <div class="form-group">
+            <label class="col-sm-2 col-sm-offset-1 control-label">{{name}}</label>
             {{#if options}}
-            <div class="col-sm-1">
+            <div class="col-sm-2">
                 <select class="form-control" name="inp_type">
+                    <option value="">--select control type--</option>
                     {{#each options}}
-                    <option val="{{value}}">{{label}}</option>
+                    <option val="{{value}}" {{#if isSelected}}selected{{/if}} >{{label}}</option>
                     {{/each}}
                 </select>
             </div>
@@ -70,7 +96,6 @@
             </div>
             {{/if}}
         </div>
-        {{/each}}
     </script>
     <!-- render template for input -->
     <script type='text/x-handlebars' id='input-render'>

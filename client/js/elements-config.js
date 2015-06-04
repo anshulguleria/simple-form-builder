@@ -13,22 +13,25 @@ var elementsConfiguration = {
                 get value() { return "type" },
                 // decide weather this will be present
                 // by default or not
-                isDefault: true,
+                isSelected: true,
                 options: [
                     {
                         // label is the label to show in UI
                         // for getting input settings
                         label: "Text",
-                        value: "text"
+                        value: "text",
+                        // for default selection
+                        isSelected: true
                     },{
                         label: "Number",
-                        value: "number"
+                        value: "number",
+                        isSelected: false
                     }
                 ]
             }, {
                 get name() { return "Placeholder" },
                 get value() { return "placeholder" },
-                isDefault: false,
+                isSelected: false,
                 options: null,
             }
 
