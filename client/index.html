@@ -58,8 +58,7 @@
             {{/each}}
             <div class="row">
                 <div class="col-sm-1 col-sm-offset-3">
-                    <button class="btn btn-small">+ add attribute</button>
-                    <button class="btn btn-default dropdown-toggle" type="button" id="_{{position}}add_attr" data-toggle="dropdown" aria-expanded="true">
+                    <button class="btn btn-small dropdown-toggle" type="button" id="_{{position}}add_attr" data-toggle="dropdown" aria-expanded="true">
                         + add
                         <span class="caret"></span>
                     </button>
@@ -67,10 +66,11 @@
                         {{#each attributes}}
                             {{#unless isSelected}}
                             <li role="presentation"><a class="jadd-attr" role="menuitem"
-                                tabindex="-1" href="#" data-attr="{{value}}">{{label}}</a></li>
+                                tabindex="-1" href="#" data-attr="{{value}}">{{name}}</a></li>
                             {{/unless}}
                         {{/each}}
-                        <li role="presentation"><a class="jadd-attr" role="menuitem" tabindex="-1" href="#" data-attr="input">Input</a></li>
+                        <li role="presentation"><a class="jadd-attr" role="menuitem"
+                            tabindex="-1" href="#" data-attr="custom">Custom Attribute</a></li>
                     </ul>
                 </div>
             </div>
