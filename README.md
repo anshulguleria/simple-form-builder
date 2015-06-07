@@ -12,3 +12,5 @@ then go to localhost:4200
 
 ##todo
 * rather than using bower for managin dependency use npm for connecting to modules and use es6 modules to require them.
+* put cover on the element edit/render states so that states can be switched easily
+* put position id also on the element so that the desired element can be positioned easily

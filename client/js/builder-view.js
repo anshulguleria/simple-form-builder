@@ -103,9 +103,44 @@
         this.setEleEvents(elementType, state, $(eleMarkup));
         return eleMarkup;
     };
+
+
+    /**
+     * setEleEvents
+     * Sets events for elements for edit and render state
+     * @param {string} elementType
+     * @param {string} state
+     * @param {jquery object} $ele
+     */
     BuilderView.setEleEvents = function (elementType, state, $ele) {
+        /** edit events:
+         * add attribute event
+         * remove attribute event
+         * switch to render state
+         * save on foucsout event
+         */
+        /**
+         * render event:
+         * switch to edit state
+         * later: any validations or custom events attached
+         */
     };
+
+    /**
+     * removes the events set in set function
+     */
     BuilderView.removeEleEvents = function (elementType, state, $ele) {
+        /** edit events:
+         * add attribute event
+         * remove attribute event
+         * switch to render state
+         * save on foucsout event
+         */
+        /**
+         * render event:
+         * switch to edit state
+         * later: any validations or custom events attached
+         */
     };
 
     BuilderView.appendElement = function (eleInfo) {
