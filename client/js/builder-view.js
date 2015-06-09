@@ -105,7 +105,7 @@
      * provides rendered markup and also applies requried events.
      */
     BuilderView.getEleHtml = function (elementType, state, context) {
-        let eleTemplate = $('#' + elementType + '-' + state).html();
+        //let eleTemplate = $('#' + elementType + '-' + state).html();
         let eleTemplate = $('#' + elementType).html();
         let eleMarkup = _processTemplate(context, eleTemplate);
         this.setEleEvents(elementType, state, $(eleMarkup));
