@@ -38,8 +38,19 @@
     <script src="js/app.js"></script>
 
     <!-- this section contains elements rendering templates -->
+    <!-- main input template -->
+    <script type="text/x-handlebars" id="input">
+        <div class="jinp-container" data-id="ele_{{@index}}">
+            {{#if isEditMode}}
+                {{> input_edit}}
+            {{else}}
+                {{> input_render}}
+            {{/if}}
+        </div>
+    </script>
+
     <!-- edit template for input -->
-    <script type='text/x-handlebars' id='input-edit'>
+    <script type='text/x-handlebars' id='input_edit-partial'>
         <div class="form-group">
             <label class="col-sm-2 control-label">Label text</label>
             <div class="col-sm-2">
@@ -96,7 +107,7 @@
         </div>
     </script>
     <!-- render template for input -->
-    <script type='text/x-handlebars' id='input-render'>
+    <script type='text/x-handlebars' id='input_render-partial'>
         <div class="form-group">
             <label class="col-sm-2 control-label">{{label}}</label>
             <input class="form-control" type="{{attributes.type}}">

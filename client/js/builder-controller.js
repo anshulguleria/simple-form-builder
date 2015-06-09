@@ -26,5 +26,9 @@
         return eleInfo;
     };
 
+    BuilderController.switchState = function(elemData, newState) {
+        elemData.isEditMode = newState === 'edit';
+    };
+
     window.BuilderController = BuilderController;
 })();

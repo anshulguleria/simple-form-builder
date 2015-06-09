@@ -86,12 +86,19 @@
         let initialHtml = _processTemplate(context, template);
         // add markup as per element
         // like input-render template for input element, etc
+
+        let $formContainer = initialHtml.find('#form_container');
         context.forEach(function (ele) {
-            let eleMarkup = BuilderView.getEleHtml(ele.type, ele.isEditMode ? "edit" : "render", ele);
-            _appendHtml(eleMarkup, initialHtml.find('#form_container'));
+            BuilderView.appendElement(ele, $formContainer);
         });
 
         _render(context, template, $('#form_container'), true);
+    };
+
+    BuilderView.appendElement = function (eleInfo, $parent) {
+        $parent = $parent || $('#form_elements');
+        let eleMarkup = this.getEleHtml(eleInfo.type, eleInfo.isEditMode ? "edit" : "render", eleInfo);
+        _appendHtml(eleMarkup, $parent);
     };
 
     /**
@@ -99,6 +106,7 @@
      */
     BuilderView.getEleHtml = function (elementType, state, context) {
         let eleTemplate = $('#' + elementType + '-' + state).html();
+        let eleTemplate = $('#' + elementType).html();
         let eleMarkup = _processTemplate(context, eleTemplate);
         this.setEleEvents(elementType, state, $(eleMarkup));
         return eleMarkup;
@@ -119,6 +127,11 @@
          * switch to render state
          * save on foucsout event
          */
+        $ele.on('focusout', function (ev) {
+            var $ele = $(ev.target);
+            var eleId = $ele.attr('data-id');
+            controller.switchState(eleId, "render");
+        });
         /**
          * render event:
          * switch to edit state
@@ -143,10 +156,7 @@
          */
     };
 
-    BuilderView.appendElement = function (eleInfo) {
-        let eleMarkup = this.getEleHtml(eleInfo.type, eleInfo.isEditMode ? "edit" : "render", eleInfo);
-        _appendHtml(eleMarkup, $('#form_elements'));
-    };
+
 
     BuilderView.addElement = function (elementType, state) {
         let context = controller.addElement(elementType, state);
