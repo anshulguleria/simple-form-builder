@@ -84,12 +84,12 @@
         let context = controller.formElements.elements;
         let template = $('#builder_view').html();
         let initialHtml = _processTemplate(context, template);
+        let $formContainer = $(initialHtml).find('#form_container');
+
         // add markup as per element
         // like input-render template for input element, etc
-
-        let $formContainer = initialHtml.find('#form_container');
-        context.forEach(function (ele) {
-            BuilderView.appendElement(ele, $formContainer);
+        context.forEach(function (eleInfo) {
+            BuilderView.appendElement(eleInfo, $formContainer);
         });
 
         _render(context, template, $('#form_container'), true);
@@ -130,13 +130,20 @@
         $ele.on('focusout', function (ev) {
             var $ele = $(ev.target);
             var eleId = $ele.attr('data-id');
-            controller.switchState(eleId, "render");
-        });
+            this.saveElement($ele);
+            //controller.switchState(eleId, "render");
+        }.bind(this));
         /**
          * render event:
          * switch to edit state
          * later: any validations or custom events attached
          */
+    };
+
+    BuilderView.saveElement = function ($ele) {
+        console.log('picked save function on element: ', $ele);
+        // read info form ui and call controller
+        // to save data
     };
 
     /**
