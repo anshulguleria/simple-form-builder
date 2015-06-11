@@ -14,6 +14,8 @@ var elementsConfiguration = {
                 // decide weather this will be present
                 // by default or not
                 isSelected: true,
+                // decided weather it can be removed or not
+                isDefault: true,
                 options: [
                     {
                         // label is the label to show in UI
@@ -32,6 +34,8 @@ var elementsConfiguration = {
                 get name() { return "Placeholder" },
                 get value() { return "placeholder" },
                 isSelected: false,
+                // decides this value can be removed or not
+                isDefault: false,
                 options: null,
             }
 

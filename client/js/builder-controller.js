@@ -11,6 +11,7 @@
 
     BuilderController.addElement = function (eleType, state) {
         var eleInfo = {
+            id: this.formElements.elements.length,
             type: eleType,
             isEditMode: state === 'edit',
             // this property will be used when we provide dragdrop
@@ -28,6 +29,17 @@
 
     BuilderController.switchState = function(elemData, newState) {
         elemData.isEditMode = newState === 'edit';
+    };
+
+    /**
+     * saveElement
+     * Find and update eleInfo of the provided
+     * element and returns saved object.
+     * @param {Number} eleId
+     * @param {object} elemData
+     * @return {object}
+     */
+    BuilderController.saveElement = function (elePos, elemData) {
     };
 
     window.BuilderController = BuilderController;

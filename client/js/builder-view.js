@@ -82,9 +82,9 @@
      */
     BuilderView.render = function () {
         let context = controller.formElements.elements;
-        let template = $('#builder_view').html();
+        let template = $('script#builder_view').html();
         let initialHtml = _processTemplate(context, template);
-        let $formContainer = $(initialHtml).find('#form_container');
+        let $formContainer = $(initialHtml).find('form#form_elements');
 
         // add markup as per element
         // like input-render template for input element, etc
@@ -128,9 +128,11 @@
          * save on foucsout event
          */
         $ele.on('focusout', function (ev) {
-            var $ele = $(ev.target);
-            var eleId = $ele.attr('data-id');
-            this.saveElement($ele);
+            let $ele = $(ev.target);
+            let eleId = $ele.attr('data-id');
+            let eleType = $ele.attr('data-ele-type');
+
+            this.saveElement(eleId, $ele, eleType);
             //controller.switchState(eleId, "render");
         }.bind(this));
         /**
@@ -140,10 +142,66 @@
          */
     };
 
-    BuilderView.saveElement = function ($ele) {
-        console.log('picked save function on element: ', $ele);
+    BuilderView.saveElement = function (eleId, $ele, eleType) {
         // read info form ui and call controller
         // to save data
+        let eleInfo = { };
+        if(eleType === 'input') {
+            eleInfo = this._readInputInfo($ele);
+        }
+        // add general porperties
+        eleInfo.id = eleId;
+        // since after  we need to switch to render
+        // mode thus set isEditMode to false
+        eleInfo.isEditMode = false;
+        // TODO: since position will be changed as per
+        // ordering thus find position of this element in ui
+        // and set that value as position
+        eleInfo.position = eleId;
+
+        controller.saveElement(eleInfo.id, eleInfo);
+        console.log('read data as: ', eleInfo);
+
+
+    };
+
+    /**
+     * _readInputInfo
+     * @private
+     * Reads data from dom of edit input element settings
+     * and returns the elementInfo object
+     * @param {jquery object} $ele
+     * @return {object}
+     */
+    BuilderView._readInputInfo = function ($ele) {
+        let eleInfo = {};
+        eleInfo.label = $ele.find('.j-inp-label').val();
+        eleInfo.attributes = [];
+        let $configElements = $ele.find('.j-attr-config');
+        Array.prototype.forEach.call($configElements, function (ele) {
+            // TODO: read attribute information. See attribute
+            // object from ele-config file
+            let $ele = $(ele);
+            eleInfo.attributes.push({
+                name: $ele.find('.j-attr-label').text(),
+                value: (function () {
+                    let $option = $ele.find('.j-attr-options'),
+                        $inputVal = $ele.find('.j-attr-val');
+                    if($option.length) {
+                        return $option.val();
+                    } else if($inputVal.length) {
+                        return $inputVal.val();
+                    }
+                })(),
+                // true default because present in attributes list
+                isSelected: true,
+                // this field need not be read
+                // since this can be picked from config
+                // when editing
+                //options: null
+            });
+        });
+        return eleInfo;
     };
 
     /**

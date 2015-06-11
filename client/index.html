@@ -40,7 +40,9 @@
     <!-- this section contains elements rendering templates -->
     <!-- main input template -->
     <script type="text/x-handlebars" id="input">
-        <div class="jinp-container" data-id="ele_{{@index}}">
+        <div id="ele_{{id}}" data-id="{{id}}"
+            class="j-input-container" data-ele-type="input"
+            tabindex="{{id}}">
             {{#if isEditMode}}
                 {{> input_edit}}
             {{else}}
@@ -54,7 +56,7 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">Label text</label>
             <div class="col-sm-2">
-                <input class="form-control" type="text" value="{{label}}">
+                <input class="form-control j-inp-label" type="text" value="{{label}}">
             </div>
         </div>
 
@@ -88,20 +90,20 @@
         </div>
     </script>
     <script id="input_attribute_edit-partial" type="text/x-handlebars">
-        <div class="form-group">
-            <label class="col-sm-2 col-sm-offset-1 control-label">{{name}}</label>
+        <div class="form-group j-attr-config">
+            <label class="col-sm-2 col-sm-offset-1 control-label j-attr-label">{{name}}</label>
             {{#if options}}
             <div class="col-sm-2">
-                <select class="form-control" name="inp_type">
+                <select class="form-control j-attr-options" name="attr_options">
                     <option value="">--select control type--</option>
                     {{#each options}}
-                    <option val="{{value}}" {{#if isSelected}}selected{{/if}} >{{label}}</option>
+                    <option value="{{value}}" {{#if isSelected}}selected{{/if}} >{{label}}</option>
                     {{/each}}
                 </select>
             </div>
             {{else}}
             <div class="col-sm-2">
-                <input class="form-control" type="text">
+                <input class="form-control j-attr-value" name="attr_value" type="text">
             </div>
             {{/if}}
         </div>
