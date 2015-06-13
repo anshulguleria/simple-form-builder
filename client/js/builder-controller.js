@@ -25,14 +25,15 @@
         // push any additional attributes
         renderInfo.attributes.forEach(function (rendAttrib) {
             let attribMatch = false;
-            for(let i=0; i< editInfo.attributes; i++) {
+            for(let i=0; i< editInfo.attributes.length; i++) {
                 if(rendAttrib.name === editInfo.attributes[i].name) {
                     editInfo.attributes[i].value = rendAttrib.value;
                     // also set selected option if options present
-                    if(editInfo.options) {
-                        for(let optIterator = 0; optIterator<editInfo.options.length; optIterator++) {
-                            if(editInfo.options[optIterator].value === rendAttrib.value) {
-                                editInfo.options[optIterator].isSelected = true;
+                    if(editInfo.attributes[i].options) {
+                        let options = editInfo.attributes[i].options;
+                        for(let optIterator = 0; optIterator<options.length; optIterator++) {
+                            if(options[optIterator].value === rendAttrib.value) {
+                                options[optIterator].isSelected = true;
                                 break;
                             }
                         }
