@@ -101,6 +101,13 @@
         _appendHtml(eleMarkup, $parent);
     };
 
+    BuilderView.appendAttribute = function (attrInfo, $parent) {
+        let eleTemplate = $('script#attribute_edit-partial').html();
+        // since we dont need to attach any events here
+        // thus no need for getAttrHtml function
+        _render(attrInfo, eleTemplate, $parent);
+    };
+
     /**
      * Updates the markup of element, i.e. re-render
      * element template
@@ -115,13 +122,11 @@
      * provides rendered markup and also applies requried events.
      */
     BuilderView.getEleHtml = function (elementType, state, context) {
-        //let eleTemplate = $('#' + elementType + '-' + state).html();
         let eleTemplate = $('#' + elementType).html();
         let eleMarkup = _processTemplate(context, eleTemplate);
         this.setEleEvents(elementType, state, $(eleMarkup));
         return eleMarkup;
     };
-
 
     /**
      * setEleEvents
@@ -138,43 +143,64 @@
          * save on foucsout event
          */
         let id = $ele.attr('id');
-        $('body').on('click.save', '#' + id + ' .j-edit-save', function (ev) {
-            let $ele = $('#' + id);
-            let eleId = $ele.attr('data-id');
-            let eleType = $ele.attr('data-ele-type');
+        if(state === 'edit') {
+            // save event
+            $('body').on('click.save', '#' + id + ' .j-edit-save', function (ev) {
+                let $ele = $('#' + id);
+                let eleId = $ele.attr('data-id');
+                let eleType = $ele.attr('data-ele-type');
 
-            this.saveElement(eleId, $ele, eleType)
-            .then(eleInfo => {
-                eleInfo = controller.switchState(eleId, "render")
-                // remove any events not required
+                this.saveElement(eleId, $ele, eleType)
+                .then(eleInfo => {
+                    eleInfo = controller.switchState(eleId, "render")
+                    // remove any events not required
+                    this.removeEleEvents(elementType, state, $ele);
+                    this.updateElement(eleInfo)
+                });
+            }.bind(this));
+
+            // add attribute event
+            $('body').on('click.addattr', '#' + id + ' .j-add-attr', function (ev) {
+                let $ele = $('#' + id);
+                let eleId = $ele.attr('data-id');
+
+                let attrName = $(ev.target).attr('data-attr');
+                console.log('starting attribute adding process');
                 this.removeEleEvents(elementType, state, $ele);
-                this.updateElement(eleInfo)
-            });
-        }.bind(this));
+                this.addAttribute(eleId, attrName, $ele.find('.j-selected-attrs'));
+            }.bind(this));
 
-        $('body').on('click.edit', '#' + id + ' .j-render', function (ev) {
-            // write handling to switch from render to edit
-            // state.
-            // i.e.
-            // * read values from eleconfig
-            // * add those values to your config as per selected values
-            // * render the edit view
-            // * enable/disable any bindings required
+        }
+        /**
+         * render event:
+         * switch to edit state
+         * later: any validations or custom events attached
+         */
+        else if(state === 'render') {
+            $('body').on('click.edit', '#' + id + ' .j-render', function (ev) {
+                // write handling to switch from render to edit
+                // state.
+                // i.e.
+                // * read values from eleconfig
+                // * add those values to your config as per selected values
+                // * render the edit view
+                // * enable/disable any bindings required
 
-            // calculating these properties inside cuz before
-            // this event trigger $ele was not appended in html
-            let $ele = $('#' +  id);
-            let eleId = $ele.attr('data-id'),
-                eleType = $ele.attr('data-ele-type');
+                // calculating these properties inside cuz before
+                // this event trigger $ele was not appended in html
+                let $ele = $('#' +  id);
+                let eleId = $ele.attr('data-id'),
+                    eleType = $ele.attr('data-ele-type');
 
-            var eleInfo = controller.getEleInfoAt(eleId);
-            var eleInfo = controller.generateEditEleInfo(eleInfo);
-            eleInfo.isEditMode = true;
-            console.log('reconstructed data as: ', eleInfo);
-            // remove any events present on this markup
-            this.removeEleEvents(elementType, state, $ele);
-            this.updateElement(eleInfo);
-        }.bind(this));
+                var eleInfo = controller.getEleInfoAt(eleId);
+                var eleInfo = controller.generateEditEleInfo(eleInfo);
+                eleInfo.isEditMode = true;
+                console.log('reconstructed data as: ', eleInfo);
+                // remove any events present on this markup
+                this.removeEleEvents(elementType, state, $ele);
+                this.updateElement(eleInfo);
+            }.bind(this));
+        }
         /**
          * render event:
          * switch to edit state
@@ -233,10 +259,17 @@
             // object from ele-config file
             let $ele = $(ele);
             eleInfo.attributes.push({
-                name: $ele.attr('data-name'),
+                name: (function () {
+                    var isCustom = $ele.attr('data-custom');
+                    if(isCustom === 'true') {
+                        return $ele.find('.j-attr-label').val();
+                    } else {
+                        return $ele.attr('data-name');
+                    }
+                })(),
                 value: (function () {
                     let $option = $ele.find('.j-attr-options'),
-                        $inputVal = $ele.find('.j-attr-val');
+                        $inputVal = $ele.find('.j-attr-value');
                     if($option.length) {
                         return $option.val();
                     } else if($inputVal.length) {
@@ -268,13 +301,18 @@
          * switch to render state
          * save on foucsout event
          */
-        $('body').off('click.save', '#' + id + ' .j-edit-save');
+        if(state === 'edit') {
+            $('body').off('click.save', '#' + id + ' .j-edit-save');
+            $('body').off('click.addattr', '#' + id + ' .j-add-attr');
+        }
         /**
          * render event:
          * switch to edit state
          * later: any validations or custom events attached
          */
-        $('body').off('click.edit', '#' + id + ' .j-render');
+        else if(state === 'render') {
+            $('body').off('click.edit', '#' + id + ' .j-render');
+        }
     };
 
 
@@ -288,6 +326,15 @@
             this.appendElement(context);
             // call appendElement
         }
+    };
+
+    BuilderView.addAttribute = function (eleId, attrName, $parent) {
+        let eleInfo = controller.addAttribute(eleId, attrName);
+        eleInfo.isEditMode = true;
+        // TODO: rather than updating whole element
+        // update only attribute section
+        this.updateElement(eleInfo);
+        //this.appendAttribute(attrInfo, $parent);
     };
 
     window.BuilderView = BuilderView;

@@ -54,11 +54,11 @@
                     name: rendAttrib.name,
                     value: rendAttrib.value,
                     isSelected: true,
-                    isDefault: false,
+                    get isDefault() { return false; },
                     // this will make label, name and value
                     // all editable
-                    isCustom: true,
-                    options: null
+                    get isCustom() { return true; },
+                    get options() { return null; }
                 });
             }
         });
@@ -87,6 +87,33 @@
 
         this.formElements.elements.push(eleInfo);
         console.log('adding item to controller', this.formElements.elements);
+        return eleInfo;
+    };
+
+    BuilderController.addAttribute = function (elePos, attrName) {
+        let eleInfo = this.formElements.elements[elePos];
+        let editInfo = this.generateEditEleInfo(eleInfo);
+        if(attrName === 'custom') {
+            // push new custom attibute
+            let attrInfo = {
+                // this feild is not used
+                //label: 'custom label',
+                name: 'data-custom',
+                value: 'custom value',
+                isSelected: true,
+                get isDefault() { return false; },
+                get isCustom() { return true; },
+                get options() { return null; }
+            };
+            eleInfo.attributes.push(attrInfo);
+        } else {
+            // make already present element selected
+            eleInfo.attributes.forEach(attr => {
+                if(attr.name === attrName) {
+                    attr.isSelected = true;
+                }
+            });
+        }
         return eleInfo;
     };
 

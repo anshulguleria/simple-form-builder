@@ -20,6 +20,7 @@ var elementsConfiguration = {
                 isSelected: true,
                 // decided weather it can be removed or not
                 isDefault: true,
+                isCustom: false,
                 options: [
                     {
                         // label is the label to show in UI
@@ -41,7 +42,17 @@ var elementsConfiguration = {
                 isSelected: false,
                 // decides this value can be removed or not
                 isDefault: false,
-                options: null,
+                isCustom: false,
+                options: null
+            }, {
+                get label() { return "Name" },
+                get name() { return "name" },
+                value: "",
+                isSelected: false,
+                // decides this value can be removed or not
+                isDefault: false,
+                isCustom: false,
+                options: null
             }
 
         ];

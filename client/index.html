@@ -65,11 +65,13 @@
             <label class="control-label col-sm-2">Attributes</label>
         </div>
         <div class="attributes-container">
-            {{#each attributes}}
-                {{#if isSelected}}
-                {{> input_attribute_edit}}
-                {{/if}}
-            {{/each}}
+            <div class="j-selected-attrs">
+                {{#each attributes}}
+                    {{#if isSelected}}
+                    {{> input_attribute_edit}}
+                    {{/if}}
+                {{/each}}
+            </div>
             <div class="row">
                 <div class="col-sm-1 col-sm-offset-3">
                     <button class="btn btn-small dropdown-toggle" type="button" id="_{{position}}add_attr" data-toggle="dropdown" aria-expanded="true">
@@ -79,19 +81,52 @@
                     <ul class="dropdown-menu" role="menu" aria-labelledby="_{{position}}add_attr">
                         {{#each attributes}}
                             {{#unless isSelected}}
-                            <li role="presentation"><a class="jadd-attr" role="menuitem"
-                                tabindex="-1" href="#" data-attr="{{value}}">{{name}}</a></li>
+                            <li role="presentation"><a class="j-add-attr" role="menuitem"
+                                tabindex="-1" href="#" data-attr="{{name}}">{{label}}</a></li>
                             {{/unless}}
                         {{/each}}
-                        <li role="presentation"><a class="jadd-attr" role="menuitem"
+                        <li role="presentation"><a class="j-add-attr" role="menuitem"
                             tabindex="-1" href="#" data-attr="custom">Custom Attribute</a></li>
                     </ul>
                 </div>
             </div>
         </div>
-        <button type="button" class="btn btn-primary j-edit-save">Save</button>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="button" class="btn btn-primary j-edit-save">Save</button>
+            </div>
+        </div>
     </script>
     <script id="input_attribute_edit-partial" type="text/x-handlebars">
+        <div class="form-group j-attr-config" data-name="{{name}}"
+            {{#if isCustom}} data-custom="true" {{else}} data-custom="false" {{/if}}>
+            {{#if isCustom}}
+                <div class="col-sm-offset-1 col-sm-2">
+                    <input class="form-control j-attr-label" name="attr_label" type="text" value="{{name}}">
+                </div>
+                <div class="col-sm-2">
+                    <input class="form-control j-attr-value" name="attr_value" type="text" value="{{value}}">
+                </div>
+            {{else}}
+                <label class="col-sm-2 col-sm-offset-1 control-label j-attr-label">{{label}}</label>
+                {{#if options}}
+                <div class="col-sm-2">
+                    <select class="form-control j-attr-options" name="attr_options">
+                        <option value="">--select control type--</option>
+                        {{#each options}}
+                        <option value="{{value}}" {{#if isSelected}}selected{{/if}} >{{label}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+                {{else}}
+                <div class="col-sm-2">
+                    <input class="form-control j-attr-value" name="attr_value" type="text" value="{{value}}">
+                </div>
+                {{/if}}
+            {{/if}}
+        </div>
+    </script>
+    <script id="attribute_edit-partial" type="text/x-handlebars">
         <div class="form-group j-attr-config" data-name="{{name}}">
             <label class="col-sm-2 col-sm-offset-1 control-label j-attr-label">{{label}}</label>
             {{#if options}}
