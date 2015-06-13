@@ -194,7 +194,7 @@
             // object from ele-config file
             let $ele = $(ele);
             eleInfo.attributes.push({
-                name: $ele.find('.j-attr-label').text(),
+                name: $ele.attr('data-name'),
                 value: (function () {
                     let $option = $ele.find('.j-attr-options'),
                         $inputVal = $ele.find('.j-attr-val');

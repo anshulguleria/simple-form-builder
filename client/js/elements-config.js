@@ -8,9 +8,13 @@ var elementsConfiguration = {
         var attributes = [
             {
                 // read-only property
-                get name() { return "Type" },
+                get label() { return "Type" },
                 // read-only property
-                get value() { return "type" },
+                get name() { return "type" },
+                // this will be property selected from options or
+                // some string value when taken input as
+                // text. e.g. placeholder
+                value: "text",
                 // decide weather this will be present
                 // by default or not
                 isSelected: true,
@@ -31,8 +35,9 @@ var elementsConfiguration = {
                     }
                 ]
             }, {
-                get name() { return "Placeholder" },
-                get value() { return "placeholder" },
+                get label() { return "Placeholder" },
+                get name() { return "placeholder" },
+                value: "",
                 isSelected: false,
                 // decides this value can be removed or not
                 isDefault: false,

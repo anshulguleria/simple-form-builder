@@ -92,8 +92,8 @@
         <button type="button" class="btn btn-primary j-edit-save">Save</button>
     </script>
     <script id="input_attribute_edit-partial" type="text/x-handlebars">
-        <div class="form-group j-attr-config">
-            <label class="col-sm-2 col-sm-offset-1 control-label j-attr-label">{{name}}</label>
+        <div class="form-group j-attr-config" data-name="{{name}}">
+            <label class="col-sm-2 col-sm-offset-1 control-label j-attr-label">{{label}}</label>
             {{#if options}}
             <div class="col-sm-2">
                 <select class="form-control j-attr-options" name="attr_options">
@@ -114,7 +114,11 @@
     <script type='text/x-handlebars' id='input_render-partial'>
         <div class="form-group">
             <label class="col-sm-2 control-label">{{label}}</label>
-            <input class="form-control" type="{{attributes.type}}">
+            <input class="form-control"
+                {{#each attributes}}
+                   {{name}} = "{{value}}"
+                {{/each}}
+            />
         </div>
     </script>
 
