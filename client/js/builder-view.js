@@ -127,8 +127,9 @@
          * switch to render state
          * save on foucsout event
          */
-        $ele.on('focusout', function (ev) {
-            let $ele = $(ev.target);
+        let id = $ele.attr('id');
+        $('body').on('click', '#' + id + ' .j-edit-save', function (ev) {
+            let $ele = $('#' + id);
             let eleId = $ele.attr('data-id');
             let eleType = $ele.attr('data-ele-type');
 
@@ -142,10 +143,20 @@
          */
     };
 
+    /**
+     * saveElement
+     * Saves element info by readind from ui and passing
+     * it to controller to save.
+     * @param {Number} eleId Position of element in array
+     * @param {jquery object} $ele ui element to save
+     * @param {string} eleType
+     * @return {Promise}
+     */
     BuilderView.saveElement = function (eleId, $ele, eleType) {
-        // read info form ui and call controller
-        // to save data
         let eleInfo = { };
+        // TODO: make this reading info part
+        // as generic so as when new elements are added no
+        // new code is to be added
         if(eleType === 'input') {
             eleInfo = this._readInputInfo($ele);
         }
@@ -156,13 +167,13 @@
         eleInfo.isEditMode = false;
         // TODO: since position will be changed as per
         // ordering thus find position of this element in ui
-        // and set that value as position
+        // and set that value as position. Currently we
+        // dont support drag and drop thus position
+        // in ui and array will be same.
         eleInfo.position = eleId;
 
-        controller.saveElement(eleInfo.id, eleInfo);
         console.log('read data as: ', eleInfo);
-
-
+        return controller.saveElement(eleInfo.id, eleInfo);
     };
 
     /**
@@ -198,7 +209,10 @@
                 // this field need not be read
                 // since this can be picked from config
                 // when editing
-                //options: null
+                //options: null,
+                // this feild will also be read from cofig
+                // while switching to edit mode
+                //isDefault: false
             });
         });
         return eleInfo;

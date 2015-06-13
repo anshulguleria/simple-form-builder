@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title></title>
+    <title>Form builder</title>
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/base.css">
 </head>
@@ -41,7 +41,8 @@
     <!-- main input template -->
     <script type="text/x-handlebars" id="input">
         <div id="ele_{{id}}" data-id="{{id}}"
-            class="j-input-container" data-ele-type="input"
+            class="j-input-container focus-border"
+            data-ele-type="input"
             tabindex="{{id}}">
             {{#if isEditMode}}
                 {{> input_edit}}
@@ -88,6 +89,7 @@
                 </div>
             </div>
         </div>
+        <button type="button" class="btn btn-primary j-edit-save">Save</button>
     </script>
     <script id="input_attribute_edit-partial" type="text/x-handlebars">
         <div class="form-group j-attr-config">
