@@ -149,6 +149,16 @@
                 this.updateElement(eleInfo)
             });
         }.bind(this));
+
+        $('body').on('click', '#' + id + ' .j-render', function (ev) {
+            // write handling to switch from render to edit
+            // state.
+            // i.e.
+            // * read values from eleconfig
+            // * add those values to your config as per selected values
+            // * render the edit view
+            // * enable/disable any bindings required
+        });
         /**
          * render event:
          * switch to edit state
