@@ -27,8 +27,10 @@
         return eleInfo;
     };
 
-    BuilderController.switchState = function(elemData, newState) {
-        elemData.isEditMode = newState === 'edit';
+    BuilderController.switchState = function(elemPos, newState) {
+        let elemData = this.formElements.elements[elemPos];
+        elemData.isEditMode = (newState === 'edit');
+        return elemData;
     };
 
     /**
@@ -37,9 +39,23 @@
      * element and returns saved object.
      * @param {Number} eleId
      * @param {object} elemData
-     * @return {object}
+     * @return {Promise}
      */
     BuilderController.saveElement = function (elePos, elemData) {
+        // create a promise and after
+        // save is successful resolve that promise
+        let elemInfo = this.formElements.elements[elePos];
+        // update values
+        elemInfo.isEditMode = elemData.isEditMode;
+        elemInfo.position = elemData.position;
+        elemInfo.attributes = elemData.attributes;
+        elemInfo.label = elemData.label;
+
+        return {
+            then: function (fn) {
+                fn(elemInfo);
+            }
+        };
     };
 
     window.BuilderController = BuilderController;

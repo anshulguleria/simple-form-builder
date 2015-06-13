@@ -102,6 +102,15 @@
     };
 
     /**
+     * Updates the markup of element, i.e. re-render
+     * element template
+     */
+    BuilderView.updateElement = function (eleInfo) {
+        var eleHtml = this.getEleHtml(eleInfo.type, eleInfo.isEditMode?"edit":"render", eleInfo);
+        $('#ele_' + eleInfo.id).replaceWith(eleHtml);
+    };
+
+    /**
      * provides rendered markup and also applies requried events.
      */
     BuilderView.getEleHtml = function (elementType, state, context) {
@@ -133,8 +142,12 @@
             let eleId = $ele.attr('data-id');
             let eleType = $ele.attr('data-ele-type');
 
-            this.saveElement(eleId, $ele, eleType);
-            //controller.switchState(eleId, "render");
+            this.saveElement(eleId, $ele, eleType)
+            .then(eleInfo => {
+                eleInfo = controller.switchState(eleId, "render")
+                // remove any events not required
+                this.updateElement(eleInfo)
+            });
         }.bind(this));
         /**
          * render event:
