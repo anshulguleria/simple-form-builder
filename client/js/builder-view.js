@@ -166,8 +166,8 @@
 
                 let attrName = $(ev.target).attr('data-attr');
                 console.log('starting attribute adding process');
-                this.removeEleEvents(elementType, state, $ele);
-                this.addAttribute(eleId, attrName, $ele.find('.j-selected-attrs'));
+                //this.removeEleEvents(elementType, state, $ele);
+                //this.addAttribute(eleId, attrName, $ele.find('.j-selected-attrs'));
             }.bind(this));
 
         }
