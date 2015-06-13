@@ -106,6 +106,7 @@
      * element template
      */
     BuilderView.updateElement = function (eleInfo) {
+        // since getelehtml also binds events thus events gets binded again
         var eleHtml = this.getEleHtml(eleInfo.type, eleInfo.isEditMode?"edit":"render", eleInfo);
         $('#ele_' + eleInfo.id).replaceWith(eleHtml);
     };
@@ -137,7 +138,7 @@
          * save on foucsout event
          */
         let id = $ele.attr('id');
-        $('body').on('click', '#' + id + ' .j-edit-save', function (ev) {
+        $('body').on('click.save', '#' + id + ' .j-edit-save', function (ev) {
             let $ele = $('#' + id);
             let eleId = $ele.attr('data-id');
             let eleType = $ele.attr('data-ele-type');
@@ -146,11 +147,12 @@
             .then(eleInfo => {
                 eleInfo = controller.switchState(eleId, "render")
                 // remove any events not required
+                this.removeEleEvents(elementType, state, $ele);
                 this.updateElement(eleInfo)
             });
         }.bind(this));
 
-        $('body').on('click', '#' + id + ' .j-render', function (ev) {
+        $('body').on('click.edit', '#' + id + ' .j-render', function (ev) {
             // write handling to switch from render to edit
             // state.
             // i.e.
@@ -158,7 +160,21 @@
             // * add those values to your config as per selected values
             // * render the edit view
             // * enable/disable any bindings required
-        });
+
+            // calculating these properties inside cuz before
+            // this event trigger $ele was not appended in html
+            let $ele = $('#' +  id);
+            let eleId = $ele.attr('data-id'),
+                eleType = $ele.attr('data-ele-type');
+
+            var eleInfo = controller.getEleInfoAt(eleId);
+            var eleInfo = controller.generateEditEleInfo(eleInfo);
+            eleInfo.isEditMode = true;
+            console.log('reconstructed data as: ', eleInfo);
+            // remove any events present on this markup
+            this.removeEleEvents(elementType, state, $ele);
+            this.updateElement(eleInfo);
+        }.bind(this));
         /**
          * render event:
          * switch to edit state
@@ -245,17 +261,20 @@
      * removes the events set in set function
      */
     BuilderView.removeEleEvents = function (elementType, state, $ele) {
+        var id = $ele.attr('id');
         /** edit events:
          * add attribute event
          * remove attribute event
          * switch to render state
          * save on foucsout event
          */
+        $('body').off('click.save', '#' + id + ' .j-edit-save');
         /**
          * render event:
          * switch to edit state
          * later: any validations or custom events attached
          */
+        $('body').off('click.edit', '#' + id + ' .j-render');
     };
 
 
