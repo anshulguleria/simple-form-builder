@@ -62,8 +62,6 @@
                 });
             }
         });
-        editInfo.attributes.forEach(attrib => {
-        });
 
         return editInfo;
     };
