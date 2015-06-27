@@ -23,7 +23,7 @@
 
         // enable attributes present in renderInfo and
         // push any additional attributes
-        renderInfo.attributes.forEach(function (rendAttrib) {
+        renderInfo.attributes.filter(rendAttrib => rendAttrib.isSelected === true).forEach(function (rendAttrib) {
             let attribMatch = false;
             for(let i=0; i< editInfo.attributes.length; i++) {
                 if(rendAttrib.name === editInfo.attributes[i].name) {
@@ -103,16 +103,16 @@
                 get isCustom() { return true; },
                 get options() { return null; }
             };
-            eleInfo.attributes.push(attrInfo);
+            editInfo.attributes.push(attrInfo);
         } else {
             // make already present element selected
-            eleInfo.attributes.forEach(attr => {
+            editInfo.attributes.forEach(attr => {
                 if(attr.name === attrName) {
                     attr.isSelected = true;
                 }
             });
         }
-        return eleInfo;
+        return editInfo;
     };
 
     BuilderController.switchState = function(elemPos, newState) {
