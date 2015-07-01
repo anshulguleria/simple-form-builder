@@ -15,6 +15,7 @@ then go to localhost:4200
 * put cover on the element edit/render states so that states can be switched easily
 * put position id also on the element so that the desired element can be positioned easily
 * add attribute should only add attribute markup in ui rather than re-rendering whole edit view
+* handle supported elements as plugin additions rather than adding up the code in available files
 
 
 ##issues
